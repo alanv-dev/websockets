@@ -1,0 +1,42 @@
+<html lang="pt-BR">
+    <head>
+        <title>InfoGame Cliente 2</title>
+    </head>
+    <body>
+        <h1>InfoGame Cliente 2</h1>
+        <div>
+            <label for="mensagem">
+                Mensagem
+            </label>
+            <br>
+            <input type="text" id="mensagem" autocomplete="off">
+            <button onclick="enviaMensagem()">
+                Enviar
+            </button>
+        </div>
+
+        <div>
+            <label for="mensagens">
+                Todas as mensagens
+            </label>
+            <br>
+            <textarea name="mensagens" id="mensagens" cols="80" rows="15"></textarea>
+        </div>
+
+        <script>
+            let socket = new WebSocket('ws://localhost:8080');
+
+            socket.onmessage = function (event) {
+                document.getElementById('mensagens').value += "\n" + event.data;
+            }
+
+            function enviaMensagem() {
+                let mensagem = document.getElementById('mensagem').value;
+                if (mensagem.length > 0) {
+                    document.getElementById('mensagens').value += "\n" + mensagem;
+                    socket.send(mensagem);
+                }
+            }
+        </script>
+    </body>
+</html>
